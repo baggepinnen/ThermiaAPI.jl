@@ -108,25 +108,25 @@ function get_operational_status(; heat_pump=heat_pump[])
     heat_pump.operational_status
 end
 function get_supply_line_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.supply_line_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.supply_line_temperature)
 end
 function get_desired_supply_line_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.desired_supply_line_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.desired_supply_line_temperature)
 end
 function get_return_line_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.return_line_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.return_line_temperature)
 end
 function get_brine_out_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.brine_out_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.brine_out_temperature)
 end
 function get_brine_in_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.brine_in_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.brine_in_temperature)
 end
 function get_cooling_tank_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.cooling_tank_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.cooling_tank_temperature)
 end
 function get_cooling_supply_line_temperature(; heat_pump=heat_pump[])
-    pyconvert(Float64, heat_pump.cooling_supply_line_temperature)
+    pyconvert(Union{Float64, Nothing}, heat_pump.cooling_supply_line_temperature)
 end
 function get_operational_status(; heat_pump=heat_pump[])
     heat_pump.operational_status
@@ -213,30 +213,30 @@ function get_is_operation_mode_read_only(; heat_pump=heat_pump[])
     heat_pump.is_operation_mode_read_only
 end
 function get_hot_water_switch_state(; heat_pump=heat_pump[])
-    pyconvert(Bool, heat_pump.hot_water_switch_state)
+    pyconvert(Union{Bool, Nothing}, heat_pump.hot_water_switch_state)
 end
 function get_hot_water_boost_switch_state(; heat_pump=heat_pump[])
-    pyconvert(Bool, heat_pump.hot_water_boost_switch_state)
+    pyconvert(Union{Bool, Nothing}, heat_pump.hot_water_boost_switch_state)
 end
 function get_historical_data_registers(; heat_pump=heat_pump[])
     heat_pump.historical_data_registers
 end
 function get_heat_temperature(; heat_pump=heat_pump[])
-    pyconvert(Int, heat_pump.heat_temperature)
+    pyconvert(Union{Int, Nothing}, heat_pump.heat_temperature)
 end
 
-function get_historical_data_for_register(; heat_pump=heat_pump[])
+"""
+    get_historical_data_for_register(register::String; days = 1, hours = 0, heat_pump)
+
+"REG_OUTDOOR_TEMPERATURE"
+"""
+function get_historical_data_for_register(register; days = 1, hours = 0, heat_pump=heat_pump[])
     datetime = pyimport("datetime")
+    now = datetime.datetime.now()
     heat_pump.get_historical_data_for_register(
-            "REG_OUTDOOR_TEMPERATURE",
-            datetime.datetime.now() - datetime.timedelta(days=1),
-            datetime.datetime.now(),
-        )
+        register, now - datetime.timedelta(days=days, hours=hours), now,
+    )
 end
-
-
-
-
 
 function update()
     thermia[].update_data()
