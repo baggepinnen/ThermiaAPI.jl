@@ -224,7 +224,7 @@ end
 """
     get_historical_data_for_register(register::String; days = 1, hours = 0, heat_pump)
 
-# Options
+# Valid registers
 - `"REG_OUTDOOR_TEMPERATURE"`
 - `"REG_SUPPLY_LINE"`
 - `"REG_HOT_WATER_TEMPERATURE"`
