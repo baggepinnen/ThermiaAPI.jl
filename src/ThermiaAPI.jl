@@ -1,46 +1,25 @@
+"""
+    module ThermiaAPI
+
+The exported API follows that of the python functions and properties of the heat-pump class. Accessor properties are implemented as julia functions with the prefix `get_`, e.g., the python code `heat_pump.supply_line_temperature` is accessed as `get_supply_line_temperature(; heat_pump=ThermiaAPI.heat_pump[])`.
+
+A default heat pump can be added to `ThermiaAPI.heat_pump::Ref.
+
+See example usage in script `thermiaapi.jl`.
+
+For help regarding the command-line interface (CLI), call `ThermiaAPI.command_main(["h"])`
+"""
 module ThermiaAPI
 
 using Comonicon
-
-ENV["JULIA_CONDAPKG_BACKEND"] = "Null"
-ENV["JULIA_PYTHONCALL_EXE"] = "python3"
 using PythonCall
 
+"Default instance of ThermiaOnlineAPI.Thermia"
 const thermia = Ref(Py(nothing))
+
+"Default instance of ThermiaOnlineAPI.HeatPump, obtained using, e.g., `thermia[].fetch_heat_pumps()[0]`"
 const heat_pump = Ref(Py(nothing))
 
-function __init__()
-    ENV["JULIA_CONDAPKG_BACKEND"] = "Null"
-    ENV["JULIA_PYTHONCALL_EXE"] = "python3"
-    global USERNAME = ENV["THERMIA_USERNAME"]
-    global PASSWORD = ENV["THERMIA_PASSWORD"]
-    global API_TYPE = ENV["THERMIA_API_TYPE"]
-
-
-    path = get(ENV, "THERMIA_PATH", nothing)
-    if path !== nothing
-        @info "Adding ThermiaAPI $path to python path"
-        sys = pyimport("sys")
-        sys.path.append(path)
-    end
-
-    global thermia, heat_pump
-    @info "Connecting to ThermiaOnlineAPI"
-    ThermiaOnlineAPI = pyimport("ThermiaOnlineAPI")
-    for i = 1:5
-        sleeptime = 3
-        try
-            thermia[] = ThermiaOnlineAPI.Thermia(USERNAME, PASSWORD, api_type=API_TYPE)
-            @info "Fetching heat pumps"
-            heat_pump[] = thermia[].fetch_heat_pumps()[0]
-            break
-        catch
-            @error "Failed to connect to ThermiaOnlineAPI, retrying in $sleeptime seconds"
-            sleep(sleeptime)
-            sleeptime *= 2
-        end
-    end
-end
 @enum OperationalStatus STATUS_MANUAL=1 STATUS_DEFROST=2 STATUS_HOTWATER=4 STATUS_HEAT=8 STATUS_COOL=16 STATUS_POOL=32 STATUS_LEGIONELLA=64 STATUS_PASSIVE_COOL=128 STATUS_STANDBY=512 STATUS_NO_DEMAND=1024 OPERATION_MODE_OFF=2048
 
 
@@ -220,9 +199,14 @@ end
 @cast function get_heat_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Int, Nothing}, heat_pump.heat_temperature)
 end
+@cast function get_is_hot_water_active(; heat_pump=heat_pump[])
+    pyconvert(Bool, heat_pump.is_hot_water_active)
+end
 
 """
     get_historical_data_for_register(register::String; days = 1, hours = 0, heat_pump)
+
+Retrieve historical data.
 
 # Valid registers
 - `"REG_OUTDOOR_TEMPERATURE"`
