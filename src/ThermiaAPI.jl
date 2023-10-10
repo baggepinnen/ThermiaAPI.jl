@@ -1,5 +1,7 @@
 module ThermiaAPI
 
+using Comonicon
+
 ENV["JULIA_CONDAPKG_BACKEND"] = "Null"
 ENV["JULIA_PYTHONCALL_EXE"] = "python3"
 using PythonCall
@@ -43,7 +45,6 @@ end
 
 
 export get_all_available_register_groups,
-get_operational_status,
 get_supply_line_temperature,
 get_desired_supply_line_temperature,
 get_return_line_temperature,
@@ -73,7 +74,6 @@ get_auxiliary_heater_1_operational_time,
 get_auxiliary_heater_2_operational_time,
 get_auxiliary_heater_3_operational_time,
 get_active_alarm_count,
-get_active_alarm_count,
 get_active_alarms,
 get_operation_mode,
 get_available_operation_modes,
@@ -93,144 +93,144 @@ set_hot_water_boost_switch_state
 
 
 
-function connected()
+@cast function connected()
     pyconvert(Bool, thermia[].connected)
 end
-function debug(; heatpump=heat_pump[])
+@cast function debug(; heatpump=heat_pump[])
     heat_pump.debug()
 end
+@cast function update()
+    thermia[].update_data()
+end
 
-
-function get_all_available_register_groups(; heat_pump=heat_pump[])
+@cast function get_all_available_register_groups(; heat_pump=heat_pump[])
     heat_pump.get_all_available_register_groups()
 end
-function get_operational_status(; heat_pump=heat_pump[])
-    heat_pump.operational_status
-end
-function get_supply_line_temperature(; heat_pump=heat_pump[])
+@cast function get_supply_line_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.supply_line_temperature)
 end
-function get_desired_supply_line_temperature(; heat_pump=heat_pump[])
+@cast function get_desired_supply_line_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.desired_supply_line_temperature)
 end
-function get_return_line_temperature(; heat_pump=heat_pump[])
+@cast function get_return_line_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.return_line_temperature)
 end
-function get_brine_out_temperature(; heat_pump=heat_pump[])
+@cast function get_brine_out_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.brine_out_temperature)
 end
-function get_brine_in_temperature(; heat_pump=heat_pump[])
+@cast function get_brine_in_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.brine_in_temperature)
 end
-function get_cooling_tank_temperature(; heat_pump=heat_pump[])
+@cast function get_cooling_tank_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.cooling_tank_temperature)
 end
-function get_cooling_supply_line_temperature(; heat_pump=heat_pump[])
+@cast function get_cooling_supply_line_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Float64, Nothing}, heat_pump.cooling_supply_line_temperature)
 end
-function get_operational_status(; heat_pump=heat_pump[])
+@cast function get_operational_status(; heat_pump=heat_pump[])
     heat_pump.operational_status
 end
-function get_available_operational_statuses(; heat_pump=heat_pump[])
+@cast function get_available_operational_statuses(; heat_pump=heat_pump[])
     heat_pump.available_operational_statuses
 end
-function get_available_operational_statuses_map(; heat_pump=heat_pump[])
+@cast function get_available_operational_statuses_map(; heat_pump=heat_pump[])
     heat_pump.available_operational_statuses_map
 end
-function get_operational_status_auxiliary_heater_3kw(; heat_pump=heat_pump[])
+@cast function get_operational_status_auxiliary_heater_3kw(; heat_pump=heat_pump[])
     heat_pump.operational_status_auxiliary_heater_3kw
 end
-function get_operational_status_auxiliary_heater_6kw(; heat_pump=heat_pump[])
+@cast function get_operational_status_auxiliary_heater_6kw(; heat_pump=heat_pump[])
     heat_pump.operational_status_auxiliary_heater_6kw
 end
-function get_operational_status_auxiliary_heater_9kw(; heat_pump=heat_pump[])
+@cast function get_operational_status_auxiliary_heater_9kw(; heat_pump=heat_pump[])
     heat_pump.operational_status_auxiliary_heater_9kw
 end
-function get_operational_status_auxiliary_heater_12kw(; heat_pump=heat_pump[])
+@cast function get_operational_status_auxiliary_heater_12kw(; heat_pump=heat_pump[])
     heat_pump.operational_status_auxiliary_heater_12kw
 end
-function get_operational_status_auxiliary_heater_15kw(; heat_pump=heat_pump[])
+@cast function get_operational_status_auxiliary_heater_15kw(; heat_pump=heat_pump[])
     heat_pump.operational_status_auxiliary_heater_15kw
 end
-function get_operational_status_compressor_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_compressor_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_compressor_status
 end
-function get_operational_status_brine_pump_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_brine_pump_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_brine_pump_status
 end
-function get_operational_status_radiator_pump_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_radiator_pump_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_radiator_pump_status
 end
-function get_operational_status_cooling_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_cooling_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_cooling_status
 end
-function get_operational_status_hot_water_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_hot_water_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_hot_water_status
 end
-function get_operational_status_heating_status(; heat_pump=heat_pump[])
+@cast function get_operational_status_heating_status(; heat_pump=heat_pump[])
     heat_pump.operational_status_heating_status
 end
-function get_operational_status_integral(; heat_pump=heat_pump[])
+@cast function get_operational_status_integral(; heat_pump=heat_pump[])
     heat_pump.operational_status_integral
 end
-function get_operational_status_pid(; heat_pump=heat_pump[])
+@cast function get_operational_status_pid(; heat_pump=heat_pump[])
     heat_pump.operational_status_pid
 end
-function get_compressor_operational_time(; heat_pump=heat_pump[])
+@cast function get_compressor_operational_time(; heat_pump=heat_pump[])
     heat_pump.compressor_operational_time
 end
-function get_hot_water_operational_time(; heat_pump=heat_pump[])
+@cast function get_hot_water_operational_time(; heat_pump=heat_pump[])
     heat_pump.hot_water_operational_time
 end
-function get_auxiliary_heater_1_operational_time(; heat_pump=heat_pump[])
+@cast function get_auxiliary_heater_1_operational_time(; heat_pump=heat_pump[])
     heat_pump.auxiliary_heater_1_operational_time
 end
-function get_auxiliary_heater_2_operational_time(; heat_pump=heat_pump[])
+@cast function get_auxiliary_heater_2_operational_time(; heat_pump=heat_pump[])
     heat_pump.auxiliary_heater_2_operational_time
 end
-function get_auxiliary_heater_3_operational_time(; heat_pump=heat_pump[])
+@cast function get_auxiliary_heater_3_operational_time(; heat_pump=heat_pump[])
     heat_pump.auxiliary_heater_3_operational_time
 end
-function get_active_alarm_count(; heat_pump=heat_pump[])
+@cast function get_active_alarm_count(; heat_pump=heat_pump[])
     heat_pump.active_alarm_count
 end
-function get_active_alarm_count(; heat_pump=heat_pump[])
-    heat_pump.active_alarm_count
-end
-function get_active_alarms(; heat_pump=heat_pump[])
+@cast function get_active_alarms(; heat_pump=heat_pump[])
     heat_pump.active_alarms
 end
-function get_operation_mode(; heat_pump=heat_pump[])
+@cast function get_operation_mode(; heat_pump=heat_pump[])
     heat_pump.operation_mode
 end
-function get_available_operation_modes(; heat_pump=heat_pump[])
+@cast function get_available_operation_modes(; heat_pump=heat_pump[])
     heat_pump.available_operation_modes
 end
-function get_available_operation_mode_map(; heat_pump=heat_pump[])
+@cast function get_available_operation_mode_map(; heat_pump=heat_pump[])
     heat_pump.available_operation_mode_map
 end
-function get_is_operation_mode_read_only(; heat_pump=heat_pump[])
+@cast function get_is_operation_mode_read_only(; heat_pump=heat_pump[])
     heat_pump.is_operation_mode_read_only
 end
-function get_hot_water_switch_state(; heat_pump=heat_pump[])
+@cast function get_hot_water_switch_state(; heat_pump=heat_pump[])
     pyconvert(Union{Bool, Nothing}, heat_pump.hot_water_switch_state)
 end
-function get_hot_water_boost_switch_state(; heat_pump=heat_pump[])
+@cast function get_hot_water_boost_switch_state(; heat_pump=heat_pump[])
     pyconvert(Union{Bool, Nothing}, heat_pump.hot_water_boost_switch_state)
 end
-function get_historical_data_registers(; heat_pump=heat_pump[])
+@cast function get_historical_data_registers(; heat_pump=heat_pump[])
     heat_pump.historical_data_registers
 end
-function get_heat_temperature(; heat_pump=heat_pump[])
+@cast function get_heat_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Int, Nothing}, heat_pump.heat_temperature)
 end
 
 """
     get_historical_data_for_register(register::String; days = 1, hours = 0, heat_pump)
 
-"REG_OUTDOOR_TEMPERATURE"
+# Options
+- `"REG_OUTDOOR_TEMPERATURE"`
+- `"REG_SUPPLY_LINE"`
+- `"REG_HOT_WATER_TEMPERATURE"`
+- `"REG_DESIRED_SYS_SUPPLY_LINE_TEMP"`
 """
-function get_historical_data_for_register(register; days = 1, hours = 0, heat_pump=heat_pump[])
+@cast function get_historical_data_for_register(register; days = 1, hours = 0, heat_pump=heat_pump[])
     datetime = pyimport("datetime")
     now = datetime.datetime.now()
     heat_pump.get_historical_data_for_register(
@@ -238,37 +238,34 @@ function get_historical_data_for_register(register; days = 1, hours = 0, heat_pu
     )
 end
 
-function update()
-    thermia[].update_data()
-end
-
 """
     set_temperature(temp::Int; heat_pump)
 """
-function set_temperature(temp::Int; heat_pump=heat_pump[])
+@cast function set_temperature(temp::Int; heat_pump=heat_pump[])
     heat_pump.set_temperature(temp)
 end
 """
     set_operation_mode(mode = "COMPRESSOR"; heat_pump)
 """
-function set_operation_mode(mode = "COMPRESSOR"; heat_pump=heat_pump[])
+@cast function set_operation_mode(mode = "COMPRESSOR"; heat_pump=heat_pump[])
     heat_pump.set_operation_mode(mode)
 end
 """
     set_hot_water_switch_state(switch_state::Int; heat_pump)
 Pass 1 or 0
 """
-function set_hot_water_switch_state(switch_state::Int; heat_pump=heat_pump[])
+@cast function set_hot_water_switch_state(switch_state::Int; heat_pump=heat_pump[])
     heat_pump.set_hot_water_switch_state(switch_state)
 end
 """
     set_hot_water_boost_switch_state(switch_state::Int; heat_pump)
 Pass 1 or 0
 """
-function set_hot_water_boost_switch_state(switch_state::Int; heat_pump=heat_pump[])
+@cast function set_hot_water_boost_switch_state(switch_state::Int; heat_pump=heat_pump[])
     heat_pump.set_hot_water_boost_switch_state(switch_state)
 end
 
+@main
 
 end
    

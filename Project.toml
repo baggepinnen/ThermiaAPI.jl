@@ -4,6 +4,7 @@ authors = ["Fredrik Bagge Carlson"]
 version = "1.0.0-DEV"
 
 [deps]
+Comonicon = "863f3e99-da2a-4334-8734-de3dacbe5542"
 PythonCall = "6099a3de-0909-46bc-b1f4-468b9a2dfc0d"
 
 [compat]
