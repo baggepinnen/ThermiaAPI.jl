@@ -62,6 +62,7 @@ get_hot_water_switch_state,
 get_hot_water_boost_switch_state,
 get_historical_data_registers,
 get_heat_temperature,
+get_hot_water_temperature,
 get_historical_data_for_register,
 set_temperature,
 set_operation_mode,
@@ -80,6 +81,7 @@ end
 end
 @cast function update()
     thermia[].update_data()
+    heat_pump[] = thermia[].fetch_heat_pumps()[0]
 end
 
 @cast function get_all_available_register_groups(; heat_pump=heat_pump[])
@@ -199,6 +201,9 @@ end
 @cast function get_heat_temperature(; heat_pump=heat_pump[])
     pyconvert(Union{Int, Nothing}, heat_pump.heat_temperature)
 end
+@cast function get_hot_water_temperature(; heat_pump=heat_pump[])
+    pyconvert(Union{Int, Nothing}, heat_pump.hot_water_temperature)
+end
 @cast function get_is_hot_water_active(; heat_pump=heat_pump[])
     pyconvert(Bool, heat_pump.is_hot_water_active)
 end
@@ -224,6 +229,8 @@ end
 
 """
     set_temperature(temp::Int; heat_pump)
+
+Set the desired indoor temperature to `temp`.
 """
 @cast function set_temperature(temp::Int; heat_pump=heat_pump[])
     heat_pump.set_temperature(temp)
@@ -236,14 +243,15 @@ end
 end
 """
     set_hot_water_switch_state(switch_state::Int; heat_pump)
-Pass 1 or 0
+
+Enable or disable the hot water. Pass 1 or 0
 """
 @cast function set_hot_water_switch_state(switch_state::Int; heat_pump=heat_pump[])
     heat_pump.set_hot_water_switch_state(switch_state)
 end
 """
     set_hot_water_boost_switch_state(switch_state::Int; heat_pump)
-Pass 1 or 0
+Enable or disable the hot-water boost model. Pass 1 or 0
 """
 @cast function set_hot_water_boost_switch_state(switch_state::Int; heat_pump=heat_pump[])
     heat_pump.set_hot_water_boost_switch_state(switch_state)
