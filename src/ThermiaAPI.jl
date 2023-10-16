@@ -257,7 +257,7 @@ Enable or disable the hot-water boost model. Pass 1 or 0
     heat_pump.set_hot_water_boost_switch_state(switch_state)
 end
 
-@main
+Comonicon.@main
 
 end
    
