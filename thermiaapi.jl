@@ -6,6 +6,7 @@ API_TYPE = ENV["THERMIA_API_TYPE"]
 
 using ThermiaAPI
 using ConfigEnv
+# cd(@__DIR__)
 dotenv()
 using ThermiaAPI.PythonCall
 
@@ -20,16 +21,16 @@ ThermiaOnlineAPI = pyimport("ThermiaOnlineAPI")
 
 @info "Connecting to ThermiaOnlineAPI"
 sleeptime = 3
-for i = 1:5 # Try 5 times with exponential backoff
-    try
-        ThermiaAPI.thermia[] = ThermiaOnlineAPI.Thermia(USERNAME, PASSWORD, api_type=API_TYPE)
+# for i = 1:4 # Try 4 times with exponential backoff
+#     try
+        ThermiaAPI.thermia[] = ThermiaOnlineAPI.Thermia(USERNAME, PASSWORD)
         @info "Fetching heat pumps"
         ThermiaAPI.heat_pump[] = ThermiaAPI.thermia[].fetch_heat_pumps()[0] # This sets the default heat pump for all functions. 
-        break
-    catch
-        @error "Failed to connect to ThermiaOnlineAPI, retrying in $sleeptime seconds"
-        sleep(sleeptime)
-        global sleeptime
-        sleeptime *= 2
-    end
-end
+#         break
+#     catch
+#         @error "Failed to connect to ThermiaOnlineAPI, retrying in $sleeptime seconds"
+#         sleep(sleeptime)
+#         global sleeptime
+#         sleeptime *= 2
+#     end
+# end
